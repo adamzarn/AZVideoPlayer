@@ -19,8 +19,8 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     let willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion?
     
     public init(player: AVPlayer?,
-                willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion?,
-                willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion?) {
+                willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
+                willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil) {
         self.player = player
         self.willBeginFullScreenPresentationWithAnimationCoordinator = willBeginFullScreenPresentationWithAnimationCoordinator
         self.willEndFullScreenPresentationWithAnimationCoordinator = willEndFullScreenPresentationWithAnimationCoordinator
