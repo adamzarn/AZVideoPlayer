@@ -1,37 +1,10 @@
-# AZVideoPlayer
+//
+//  ContentView.swift
+//  AZVideoPlayerDemoApp
+//
+//  Created by Adam Zarn on 7/30/22.
+//
 
-The `VideoPlayer` provided by `SwiftUI` out of the box is great but it's missing one very important feature: full screen presentation mode. `AZVideoPlayer` behaves pretty much exactly like `VideoPlayer`, but adds the button that's provided by `AVPlayerViewController` to go full screen.
-
-### Basic Usage
-
-```swift
-import SwiftUI
-import AVKit
-import AZVideoPlayer
-
-struct ContentView: View {
-    var player: AVPlayer?
-    
-    init(url: URL) {
-        self.player = AVPlayer(url: url)
-    }
-    
-    var body: some View {
-        AZVideoPlayer(player: player)
-            .aspectRatio(16/9, contentMode: .fit)
-    }
-}
-```
-
-### Advanced Usage
-
-I had a couple more reasons for making this package:
-1. Make it easy to reset the video player when the view disappears.
-2. Have the video continue playing when ending full screen presentation (it defaults to pausing when full screen mode ends).
-
-Here's an example of how `AZVideoPlayer` can be used to do that:
-
-```swift
 import SwiftUI
 import AVKit
 import AZVideoPlayer
@@ -56,7 +29,8 @@ struct ContentView: View {
                 willBeginFullScreenPresentation = false
                 return
             }
-            player?.reset()
+            player?.pause()
+            player?.seek(to: .zero)
         }
     }
     
@@ -72,4 +46,3 @@ struct ContentView: View {
         AZVideoPlayer.continuePlayingIfPlaying(player, coordinator)
     }
 }
-```
