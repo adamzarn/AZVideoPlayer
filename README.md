@@ -19,6 +19,9 @@ struct ContentView: View {
     var body: some View {
         AZVideoPlayer(player: player)
             .aspectRatio(16/9, contentMode: .fit)
+            // Adding .shadow(radius: 0) is necessary if
+            // your player will be in a List on iOS 16.
+            .shadow(radius: 0)
     }
 }
 ```
@@ -49,6 +52,9 @@ struct ContentView: View {
                       willBeginFullScreenPresentationWithAnimationCoordinator: willBeginFullScreen,
                       willEndFullScreenPresentationWithAnimationCoordinator: willEndFullScreen)
         .aspectRatio(16/9, contentMode: .fit)
+        // Adding .shadow(radius: 0) is necessary if
+        // your player will be in a List on iOS 16.
+        .shadow(radius: 0)
         .onDisappear {
             // onDisappear is called when full screen presentation begins, but the view is
             // not actually disappearing in this case so we don't want to reset the player
@@ -56,7 +62,8 @@ struct ContentView: View {
                 willBeginFullScreenPresentation = false
                 return
             }
-            player?.reset()
+            player?.pause()
+            player?.seek(to: .zero)
         }
     }
     

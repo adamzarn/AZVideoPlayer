@@ -11,7 +11,7 @@ import SwiftUI
 struct AZVideoPlayerDemoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(url: URL(string: "https://bit.ly/swswift")!)
+            MainTabView()
         }
     }
 }

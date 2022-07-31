@@ -8,19 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		DB52E2972895D1B900AABEA4 /* AZVideoPlayerDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB52E2962895D1B900AABEA4 /* AZVideoPlayerDemoApp.swift */; };
-		DB52E2992895D1B900AABEA4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB52E2982895D1B900AABEA4 /* ContentView.swift */; };
+		DB52E2992895D1B900AABEA4 /* DemoVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB52E2982895D1B900AABEA4 /* DemoVideoPlayer.swift */; };
 		DB52E29B2895D1BB00AABEA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB52E29A2895D1BB00AABEA4 /* Assets.xcassets */; };
 		DB52E29E2895D1BB00AABEA4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB52E29D2895D1BB00AABEA4 /* Preview Assets.xcassets */; };
 		DB52E2A82895D27F00AABEA4 /* AZVideoPlayer in Frameworks */ = {isa = PBXBuildFile; productRef = DB52E2A72895D27F00AABEA4 /* AZVideoPlayer */; };
+		DB60650E289703F50094FE25 /* VStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB60650D289703F50094FE25 /* VStackView.swift */; };
+		DB606510289704280094FE25 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB60650F289704280094FE25 /* MainTabView.swift */; };
+		DB606512289705440094FE25 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB606511289705440094FE25 /* ListView.swift */; };
+		DB606516289706B60094FE25 /* LazyVStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB606515289706B60094FE25 /* LazyVStackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		DB52E2932895D1B900AABEA4 /* AZVideoPlayerDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AZVideoPlayerDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB52E2962895D1B900AABEA4 /* AZVideoPlayerDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AZVideoPlayerDemoApp.swift; sourceTree = "<group>"; };
-		DB52E2982895D1B900AABEA4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DB52E2982895D1B900AABEA4 /* DemoVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoVideoPlayer.swift; sourceTree = "<group>"; };
 		DB52E29A2895D1BB00AABEA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB52E29D2895D1BB00AABEA4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DB52E2A52895D25500AABEA4 /* AZVideoPlayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AZVideoPlayer; path = ..; sourceTree = "<group>"; };
+		DB60650D289703F50094FE25 /* VStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackView.swift; sourceTree = "<group>"; };
+		DB60650F289704280094FE25 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		DB606511289705440094FE25 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		DB606515289706B60094FE25 /* LazyVStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVStackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +65,11 @@
 			isa = PBXGroup;
 			children = (
 				DB52E2962895D1B900AABEA4 /* AZVideoPlayerDemoApp.swift */,
-				DB52E2982895D1B900AABEA4 /* ContentView.swift */,
+				DB60650F289704280094FE25 /* MainTabView.swift */,
+				DB52E2982895D1B900AABEA4 /* DemoVideoPlayer.swift */,
+				DB60650D289703F50094FE25 /* VStackView.swift */,
+				DB606511289705440094FE25 /* ListView.swift */,
+				DB606515289706B60094FE25 /* LazyVStackView.swift */,
 				DB52E29A2895D1BB00AABEA4 /* Assets.xcassets */,
 				DB52E29C2895D1BB00AABEA4 /* Preview Content */,
 			);
@@ -160,8 +172,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB52E2992895D1B900AABEA4 /* ContentView.swift in Sources */,
+				DB60650E289703F50094FE25 /* VStackView.swift in Sources */,
+				DB52E2992895D1B900AABEA4 /* DemoVideoPlayer.swift in Sources */,
+				DB606512289705440094FE25 /* ListView.swift in Sources */,
 				DB52E2972895D1B900AABEA4 /* AZVideoPlayerDemoApp.swift in Sources */,
+				DB606510289704280094FE25 /* MainTabView.swift in Sources */,
+				DB606516289706B60094FE25 /* LazyVStackView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
