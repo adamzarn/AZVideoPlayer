@@ -16,6 +16,7 @@
 		DB606510289704280094FE25 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB60650F289704280094FE25 /* MainTabView.swift */; };
 		DB606512289705440094FE25 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB606511289705440094FE25 /* ListView.swift */; };
 		DB606516289706B60094FE25 /* LazyVStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB606515289706B60094FE25 /* LazyVStackView.swift */; };
+		DBC95BCB2898703D005D019A /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC95BCA2898703D005D019A /* SheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		DB60650F289704280094FE25 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		DB606511289705440094FE25 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		DB606515289706B60094FE25 /* LazyVStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyVStackView.swift; sourceTree = "<group>"; };
+		DBC95BCA2898703D005D019A /* SheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				DB60650D289703F50094FE25 /* VStackView.swift */,
 				DB606511289705440094FE25 /* ListView.swift */,
 				DB606515289706B60094FE25 /* LazyVStackView.swift */,
+				DBC95BCA2898703D005D019A /* SheetView.swift */,
 				DB52E29A2895D1BB00AABEA4 /* Assets.xcassets */,
 				DB52E29C2895D1BB00AABEA4 /* Preview Content */,
 			);
@@ -173,6 +176,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB60650E289703F50094FE25 /* VStackView.swift in Sources */,
+				DBC95BCB2898703D005D019A /* SheetView.swift in Sources */,
 				DB52E2992895D1B900AABEA4 /* DemoVideoPlayer.swift in Sources */,
 				DB606512289705440094FE25 /* ListView.swift in Sources */,
 				DB52E2972895D1B900AABEA4 /* AZVideoPlayerDemoApp.swift in Sources */,

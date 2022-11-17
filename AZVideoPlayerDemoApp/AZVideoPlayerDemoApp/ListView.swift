@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AVKit
 
 struct ListView: View {
     var url: URL

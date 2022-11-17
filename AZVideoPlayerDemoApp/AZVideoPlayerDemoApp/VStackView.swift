@@ -15,7 +15,6 @@ struct VStackView: View {
     var body: some View {
         VStack {
             DemoVideoPlayer(url: url)
-            VideoPlayer(player: AVPlayer(url: url))
             Spacer()
         }
     }

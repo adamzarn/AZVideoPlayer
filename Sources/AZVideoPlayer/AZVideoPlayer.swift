@@ -15,13 +15,16 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     ) -> Void
     
     let player: AVPlayer?
+    let showsPlaybackControls: Bool
     let willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion?
     let willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion?
     
     public init(player: AVPlayer?,
                 willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
-                willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil) {
+                willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
+                showsPlaybackControls: Bool = true) {
         self.player = player
+        self.showsPlaybackControls = showsPlaybackControls
         self.willBeginFullScreenPresentationWithAnimationCoordinator = willBeginFullScreenPresentationWithAnimationCoordinator
         self.willEndFullScreenPresentationWithAnimationCoordinator = willEndFullScreenPresentationWithAnimationCoordinator
     }
@@ -29,6 +32,7 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     public func makeUIViewController(context: Context) -> AVPlayerViewController {
         let controller = AVPlayerViewController()
         controller.player = player
+        controller.showsPlaybackControls = showsPlaybackControls
         controller.delegate = context.coordinator
         return controller
     }

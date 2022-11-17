@@ -27,6 +27,10 @@ struct MainTabView: View {
                 Image(systemName: "")
                 Text("LazyVStack")
             }
+            SheetView(url: URL(string: "https://bit.ly/swswift")!).tabItem {
+                Image(systemName: "")
+                Text("Sheet")
+            }
         }
     }
 }
