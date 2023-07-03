@@ -13,20 +13,25 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     public typealias TransitionCompletion = (
         AVPlayerViewController, UIViewControllerTransitionCoordinator
     ) -> Void
+    public typealias Volume = Float
+    public typealias StatusDidChange = (AZVideoPlayerStatus) -> Void
     
     let player: AVPlayer?
     let showsPlaybackControls: Bool
     let willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion?
     let willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion?
+    let statusDidChange: StatusDidChange?
     
     public init(player: AVPlayer?,
                 willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
                 willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
+                statusDidChange: StatusDidChange? = nil,
                 showsPlaybackControls: Bool = true) {
         self.player = player
         self.showsPlaybackControls = showsPlaybackControls
         self.willBeginFullScreenPresentationWithAnimationCoordinator = willBeginFullScreenPresentationWithAnimationCoordinator
         self.willEndFullScreenPresentationWithAnimationCoordinator = willEndFullScreenPresentationWithAnimationCoordinator
+        self.statusDidChange = statusDidChange
     }
 
     public func makeUIViewController(context: Context) -> AVPlayerViewController {
@@ -42,14 +47,22 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     }
     
     public func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, statusDidChange)
     }
     
     public final class Coordinator: NSObject, AVPlayerViewControllerDelegate {
         var parent: AZVideoPlayer
+        var statusDidChange: StatusDidChange?
+        let observedKeyPaths = ["timeControlStatus"]
      
-        init(_ parent: AZVideoPlayer) {
+        init(_ parent: AZVideoPlayer,
+             _ statusDidChange: StatusDidChange? = nil) {
             self.parent = parent
+            self.statusDidChange = statusDidChange
+            super.init()
+            for keyPath in observedKeyPaths {
+                parent.player?.addObserver(self, forKeyPath: keyPath, options: [.old, .new], context: nil)
+            }
         }
         
         public func playerViewController(_ playerViewController: AVPlayerViewController,
@@ -60,6 +73,13 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
         public func playerViewController(_ playerViewController: AVPlayerViewController,
                                          willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator) {
             parent.willEndFullScreenPresentationWithAnimationCoordinator?(playerViewController, coordinator)
+        }
+        
+        public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+            guard object as AnyObject? === parent.player, let keyPath = keyPath else { return }
+            guard observedKeyPaths.contains(keyPath) else { return }
+            guard let timeControlStatus = parent.player?.timeControlStatus, let volume = parent.player?.volume else { return }
+            statusDidChange?(AZVideoPlayerStatus(timeControlStatus: timeControlStatus, volume: volume))
         }
     }
     

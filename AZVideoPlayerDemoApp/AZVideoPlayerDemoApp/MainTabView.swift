@@ -10,24 +10,24 @@ import SwiftUI
 struct MainTabView: View {
     var body: some View {
         TabView {
-            DemoVideoPlayer(url: URL(string: "https://bit.ly/swswift")!).tabItem {
+            DemoVideoPlayer(url: URL(string: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!).tabItem {
                 Image(systemName: "")
                 Text("Basic")
             }
-            VStackView(url: URL(string: "https://bit.ly/swswift")!).tabItem {
+            VStackView(url: URL(string: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!).tabItem {
                 Image(systemName: "")
                 Text("VStack")
             }
             
-            ListView(url: URL(string: "https://bit.ly/swswift")!).tabItem {
+            ListView(url: URL(string: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!).tabItem {
                 Image(systemName: "")
                 Text("List")
             }
-            LazyVStackView(url: URL(string: "https://bit.ly/swswift")!).tabItem {
+            LazyVStackView(url: URL(string: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!).tabItem {
                 Image(systemName: "")
                 Text("LazyVStack")
             }
-            SheetView(url: URL(string: "https://bit.ly/swswift")!).tabItem {
+            SheetView(url: URL(string: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!).tabItem {
                 Image(systemName: "")
                 Text("Sheet")
             }
