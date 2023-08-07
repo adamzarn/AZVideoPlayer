@@ -53,16 +53,16 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     public final class Coordinator: NSObject, AVPlayerViewControllerDelegate {
         var parent: AZVideoPlayer
         var statusDidChange: StatusDidChange?
-        let observedKeyPaths = ["timeControlStatus"]
+        var timeControlStatusObservation: NSKeyValueObservation?
      
         init(_ parent: AZVideoPlayer,
              _ statusDidChange: StatusDidChange? = nil) {
             self.parent = parent
             self.statusDidChange = statusDidChange
-            super.init()
-            for keyPath in observedKeyPaths {
-                parent.player?.addObserver(self, forKeyPath: keyPath, options: [.old, .new], context: nil)
-            }
+            self.timeControlStatusObservation = self.parent.player?.observe(\.timeControlStatus,
+                                                                             changeHandler: { player, _ in
+                statusDidChange?(AZVideoPlayerStatus(timeControlStatus: player.timeControlStatus, volume: player.volume))
+            })
         }
         
         public func playerViewController(_ playerViewController: AVPlayerViewController,
@@ -73,13 +73,6 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
         public func playerViewController(_ playerViewController: AVPlayerViewController,
                                          willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator) {
             parent.willEndFullScreenPresentationWithAnimationCoordinator?(playerViewController, coordinator)
-        }
-        
-        public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-            guard object as AnyObject? === parent.player, let keyPath = keyPath else { return }
-            guard observedKeyPaths.contains(keyPath) else { return }
-            guard let timeControlStatus = parent.player?.timeControlStatus, let volume = parent.player?.volume else { return }
-            statusDidChange?(AZVideoPlayerStatus(timeControlStatus: timeControlStatus, volume: volume))
         }
     }
     

@@ -14,8 +14,14 @@ struct LazyVStackView: View {
         ScrollView {
             LazyVStack {
                 DemoVideoPlayer(url: url)
+                Text("HELLO").padding(100)
+                DemoVideoPlayer(url: url)
+                Text("HELLO").padding(100)
                 DemoVideoPlayer(url: url)
                 DemoVideoPlayer(url: url)
+                Text("HELLO").padding(100)
+                DemoVideoPlayer(url: url)
+                Text("HELLO").padding(100)
                 DemoVideoPlayer(url: url)
             }
         }
