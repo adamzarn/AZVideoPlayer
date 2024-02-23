@@ -20,22 +20,30 @@ struct DemoVideoPlayer: View {
     }
     
     var body: some View {
-        AZVideoPlayer(player: player,
-                      willBeginFullScreenPresentationWithAnimationCoordinator: willBeginFullScreen,
-                      willEndFullScreenPresentationWithAnimationCoordinator: willEndFullScreen,
-                      statusDidChange: statusDidChange)
-//        .cornerRadius(10)
-        .aspectRatio(16/9, contentMode: .fit)
-        .shadow(color: .white, radius: 2)
-        .onDisappear {
-            // onDisappear is called when full screen presentation begins, but the view is
-            // not actually disappearing in this case so we don't want to reset the player
-            guard !willBeginFullScreenPresentation else {
-                willBeginFullScreenPresentation = false
-                return
+        VStack {
+            AZVideoPlayer(player: player,
+                          willBeginFullScreenPresentationWithAnimationCoordinator: willBeginFullScreen,
+                          willEndFullScreenPresentationWithAnimationCoordinator: willEndFullScreen,
+                          statusDidChange: statusDidChange,
+                          showsPlaybackControls: true,
+                          entersFullScreenWhenPlaybackBegins: true)
+            .aspectRatio(16/9, contentMode: .fit)
+            .shadow(color: .white, radius: 2)
+            .onDisappear {
+                // onDisappear is called when full screen presentation begins, but the view is
+                // not actually disappearing in this case so we don't want to reset the player
+                guard !willBeginFullScreenPresentation else {
+                    willBeginFullScreenPresentation = false
+                    return
+                }
+                player?.pause()
+                player?.seek(to: .zero)
             }
-            player?.pause()
-            player?.seek(to: .zero)
+            Button(action: {
+                player?.play()
+            }, label: {
+                Text("Play")
+            })
         }
     }
     

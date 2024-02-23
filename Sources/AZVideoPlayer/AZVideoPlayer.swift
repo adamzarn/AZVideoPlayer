@@ -17,27 +17,31 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     public typealias StatusDidChange = (AZVideoPlayerStatus) -> Void
     
     let player: AVPlayer?
-    let showsPlaybackControls: Bool
+    let controller = AVPlayerViewController()
     let willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion?
     let willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion?
     let statusDidChange: StatusDidChange?
+    let showsPlaybackControls: Bool
+    let entersFullScreenWhenPlaybackBegins: Bool
     
     public init(player: AVPlayer?,
                 willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
                 willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
                 statusDidChange: StatusDidChange? = nil,
-                showsPlaybackControls: Bool = true) {
+                showsPlaybackControls: Bool = true,
+                entersFullScreenWhenPlaybackBegins: Bool = false) {
         self.player = player
-        self.showsPlaybackControls = showsPlaybackControls
         self.willBeginFullScreenPresentationWithAnimationCoordinator = willBeginFullScreenPresentationWithAnimationCoordinator
         self.willEndFullScreenPresentationWithAnimationCoordinator = willEndFullScreenPresentationWithAnimationCoordinator
         self.statusDidChange = statusDidChange
+        self.showsPlaybackControls = showsPlaybackControls
+        self.entersFullScreenWhenPlaybackBegins = entersFullScreenWhenPlaybackBegins
     }
 
     public func makeUIViewController(context: Context) -> AVPlayerViewController {
-        let controller = AVPlayerViewController()
         controller.player = player
         controller.showsPlaybackControls = showsPlaybackControls
+        controller.entersFullScreenWhenPlaybackBegins = entersFullScreenWhenPlaybackBegins
         controller.delegate = context.coordinator
         return controller
     }
@@ -53,15 +57,25 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     public final class Coordinator: NSObject, AVPlayerViewControllerDelegate {
         var parent: AZVideoPlayer
         var statusDidChange: StatusDidChange?
+        var previousTimeControlStatus: AVPlayer.TimeControlStatus?
         var timeControlStatusObservation: NSKeyValueObservation?
+        
+        func playbackDidBeginForFirstTime(for player: AVPlayer) -> Bool {
+            return player.timeControlStatus == .playing && previousTimeControlStatus != .paused
+        }
      
         init(_ parent: AZVideoPlayer,
              _ statusDidChange: StatusDidChange? = nil) {
             self.parent = parent
             self.statusDidChange = statusDidChange
+            super.init()
             self.timeControlStatusObservation = self.parent.player?.observe(\.timeControlStatus,
                                                                              changeHandler: { player, _ in
                 statusDidChange?(AZVideoPlayerStatus(timeControlStatus: player.timeControlStatus, volume: player.volume))
+                if self.playbackDidBeginForFirstTime(for: player) && parent.entersFullScreenWhenPlaybackBegins {
+                    parent.controller.enterFullScreen(animated: true)
+                }
+                self.previousTimeControlStatus = player.timeControlStatus
             })
         }
         
@@ -78,7 +92,7 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     
     public static func continuePlayingIfPlaying(_ player: AVPlayer?,
                                                 _ coordinator: UIViewControllerTransitionCoordinator) {
-        let isPlaying = player?.isPlaying ?? false
+        let isPlaying = player?.timeControlStatus == .playing
         coordinator.animate(alongsideTransition: nil) { _ in
             if isPlaying {
                 player?.play()
