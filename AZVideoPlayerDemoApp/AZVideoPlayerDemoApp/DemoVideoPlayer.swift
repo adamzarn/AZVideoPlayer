@@ -26,7 +26,8 @@ struct DemoVideoPlayer: View {
                           willEndFullScreenPresentationWithAnimationCoordinator: willEndFullScreen,
                           statusDidChange: statusDidChange,
                           showsPlaybackControls: true,
-                          entersFullScreenWhenPlaybackBegins: true)
+                          entersFullScreenWhenPlaybackBegins: true,
+                          pausesWhenFullScreenPlaybackEnds: false)
             .aspectRatio(16/9, contentMode: .fit)
             .shadow(color: .white, radius: 2)
             .onDisappear {
@@ -54,8 +55,5 @@ struct DemoVideoPlayer: View {
     
     func willEndFullScreen(_ playerViewController: AVPlayerViewController,
                            _ coordinator: UIViewControllerTransitionCoordinator) {
-        // This is a static helper method provided by AZVideoPlayer to keep
-        // the video playing if it was playing when full screen presentation ended
-        AZVideoPlayer.continuePlayingIfPlaying(player, coordinator)
     }
 }

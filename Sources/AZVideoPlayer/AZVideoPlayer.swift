@@ -23,19 +23,22 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     let statusDidChange: StatusDidChange?
     let showsPlaybackControls: Bool
     let entersFullScreenWhenPlaybackBegins: Bool
+    let pausesWhenFullScreenPlaybackEnds: Bool
     
     public init(player: AVPlayer?,
                 willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
                 willEndFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
                 statusDidChange: StatusDidChange? = nil,
                 showsPlaybackControls: Bool = true,
-                entersFullScreenWhenPlaybackBegins: Bool = false) {
+                entersFullScreenWhenPlaybackBegins: Bool = false,
+                pausesWhenFullScreenPlaybackEnds: Bool = false) {
         self.player = player
         self.willBeginFullScreenPresentationWithAnimationCoordinator = willBeginFullScreenPresentationWithAnimationCoordinator
         self.willEndFullScreenPresentationWithAnimationCoordinator = willEndFullScreenPresentationWithAnimationCoordinator
         self.statusDidChange = statusDidChange
         self.showsPlaybackControls = showsPlaybackControls
         self.entersFullScreenWhenPlaybackBegins = entersFullScreenWhenPlaybackBegins
+        self.pausesWhenFullScreenPlaybackEnds = pausesWhenFullScreenPlaybackEnds
     }
 
     public func makeUIViewController(context: Context) -> AVPlayerViewController {
@@ -59,9 +62,11 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
         var statusDidChange: StatusDidChange?
         var previousTimeControlStatus: AVPlayer.TimeControlStatus?
         var timeControlStatusObservation: NSKeyValueObservation?
+        var shouldEnterFullScreenPresentationOnNextPlay: Bool = true
         
-        func playbackDidBeginForFirstTime(for player: AVPlayer) -> Bool {
-            return player.timeControlStatus == .playing && previousTimeControlStatus != .paused
+        func shouldEnterFullScreenPresentation(of player: AVPlayer) -> Bool {
+            guard parent.entersFullScreenWhenPlaybackBegins else { return false }
+            return player.timeControlStatus == .playing && shouldEnterFullScreenPresentationOnNextPlay
         }
      
         init(_ parent: AZVideoPlayer,
@@ -72,8 +77,10 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
             self.timeControlStatusObservation = self.parent.player?.observe(\.timeControlStatus,
                                                                              changeHandler: { player, _ in
                 statusDidChange?(AZVideoPlayerStatus(timeControlStatus: player.timeControlStatus, volume: player.volume))
-                if self.playbackDidBeginForFirstTime(for: player) && parent.entersFullScreenWhenPlaybackBegins {
-                    parent.controller.enterFullScreen(animated: true)
+                if self.shouldEnterFullScreenPresentation(of: player) {
+                    parent.controller.enterFullScreenPresentation(animated: true)
+                } else if player.timeControlStatus == .playing {
+                    self.shouldEnterFullScreenPresentationOnNextPlay = true
                 }
                 self.previousTimeControlStatus = player.timeControlStatus
             })
@@ -86,16 +93,20 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
         
         public func playerViewController(_ playerViewController: AVPlayerViewController,
                                          willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+            if !parent.pausesWhenFullScreenPlaybackEnds {
+                continuePlayingIfPlaying(parent.player, coordinator)
+            }
             parent.willEndFullScreenPresentationWithAnimationCoordinator?(playerViewController, coordinator)
         }
-    }
-    
-    public static func continuePlayingIfPlaying(_ player: AVPlayer?,
-                                                _ coordinator: UIViewControllerTransitionCoordinator) {
-        let isPlaying = player?.timeControlStatus == .playing
-        coordinator.animate(alongsideTransition: nil) { _ in
-            if isPlaying {
-                player?.play()
+        
+        func continuePlayingIfPlaying(_ player: AVPlayer?,
+                                      _ coordinator: UIViewControllerTransitionCoordinator) {
+            let isPlaying = player?.timeControlStatus == .playing
+            coordinator.animate(alongsideTransition: nil) { _ in
+                if isPlaying {
+                    self.shouldEnterFullScreenPresentationOnNextPlay = false
+                    player?.play()
+                }
             }
         }
     }

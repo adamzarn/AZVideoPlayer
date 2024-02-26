@@ -8,10 +8,10 @@
 import AVKit
 
 extension AVPlayerViewController {
-    func enterFullScreen(animated: Bool) {
+    func enterFullScreenPresentation(animated: Bool) {
         perform(NSSelectorFromString("enterFullScreenAnimated:completionHandler:"), with: animated, with: nil)
     }
-    func exitFullScreen(animated: Bool) {
+    func exitFullScreenPresentation(animated: Bool) {
         perform(NSSelectorFromString("exitFullScreenAnimated:completionHandler:"), with: animated, with: nil)
     }
 }
