@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import AZVideoPlayer
 
 struct MainTabView: View {
     var body: some View {
         TabView {
-            DemoVideoPlayer(url: URL(string: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!).tabItem {
+            DemoVideoPlayer(url: URL(string: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!,
+                            statusDidChange: statusDidChange).tabItem {
                 Image(systemName: "")
                 Text("Basic")
             }
@@ -32,6 +34,11 @@ struct MainTabView: View {
                 Text("Sheet")
             }
         }
+    }
+    
+    func statusDidChange(_ status: AZVideoPlayerStatus) {
+        print(status.timeControlStatus.rawValue)
+        print(status.volume)
     }
 }
 

@@ -50,7 +50,11 @@ struct ContentView: View {
     var body: some View {
         AZVideoPlayer(player: player,
                       willBeginFullScreenPresentationWithAnimationCoordinator: willBeginFullScreen,
-                      willEndFullScreenPresentationWithAnimationCoordinator: willEndFullScreen)
+                      willEndFullScreenPresentationWithAnimationCoordinator: willEndFullScreen,
+                      statusDidChange: statusDidChange,
+                      showsPlaybackControls: true,
+                      entersFullScreenWhenPlaybackBegins: false,
+                      pausesWhenFullScreenPlaybackEnds: false) {
         .aspectRatio(16/9, contentMode: .fit)
         // Adding .shadow(radius: 0) is necessary if
         // your player will be in a List on iOS 16.
@@ -74,9 +78,11 @@ struct ContentView: View {
     
     func willEndFullScreen(_ playerViewController: AVPlayerViewController,
                            _ coordinator: UIViewControllerTransitionCoordinator) {
-        // This is a static helper method provided by AZVideoPlayer to keep
-        // the video playing if it was playing when full screen presentation ended
-        AZVideoPlayer.continuePlayingIfPlaying(player, coordinator)
+    }
+    
+    func statusDidChange(_ status: AZVideoPlayerStatus) {
+        print(status.timeControlStatus.rawValue)
+        print(status.volume)
     }
 }
 ```
