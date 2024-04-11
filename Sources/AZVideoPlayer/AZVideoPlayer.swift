@@ -40,7 +40,7 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
         self.entersFullScreenWhenPlaybackBegins = entersFullScreenWhenPlaybackBegins
         self.pausesWhenFullScreenPlaybackEnds = pausesWhenFullScreenPlaybackEnds
     }
-
+    
     public func makeUIViewController(context: Context) -> AVPlayerViewController {
         controller.player = player
         controller.showsPlaybackControls = showsPlaybackControls
@@ -61,28 +61,28 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
         var parent: AZVideoPlayer
         var statusDidChange: StatusDidChange?
         var previousTimeControlStatus: AVPlayer.TimeControlStatus?
-        weak var timeControlStatusObservation: NSKeyValueObservation?
+        var timeControlStatusObservation: NSKeyValueObservation?
         var shouldEnterFullScreenPresentationOnNextPlay: Bool = true
         
         func shouldEnterFullScreenPresentation(of player: AVPlayer) -> Bool {
             guard parent.entersFullScreenWhenPlaybackBegins else { return false }
             return player.timeControlStatus == .playing && shouldEnterFullScreenPresentationOnNextPlay
         }
-     
+        
         init(_ parent: AZVideoPlayer,
              _ statusDidChange: StatusDidChange? = nil) {
             self.parent = parent
             self.statusDidChange = statusDidChange
             super.init()
             self.timeControlStatusObservation = self.parent.player?.observe(\.timeControlStatus,
-                                                                             changeHandler: { player, _ in
+                                                                             changeHandler: { [weak self] player, _ in
                 statusDidChange?(AZVideoPlayerStatus(timeControlStatus: player.timeControlStatus, volume: player.volume))
-                if self.shouldEnterFullScreenPresentation(of: player) {
+                if self?.shouldEnterFullScreenPresentation(of: player) == true {
                     parent.controller.enterFullScreenPresentation(animated: true)
                 } else if player.timeControlStatus == .playing {
-                    self.shouldEnterFullScreenPresentationOnNextPlay = true
+                    self?.shouldEnterFullScreenPresentationOnNextPlay = true
                 }
-                self.previousTimeControlStatus = player.timeControlStatus
+                self?.previousTimeControlStatus = player.timeControlStatus
             })
         }
         
