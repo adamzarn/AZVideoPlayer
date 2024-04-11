@@ -61,7 +61,7 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
         var parent: AZVideoPlayer
         var statusDidChange: StatusDidChange?
         var previousTimeControlStatus: AVPlayer.TimeControlStatus?
-        var timeControlStatusObservation: NSKeyValueObservation?
+        weak var timeControlStatusObservation: NSKeyValueObservation?
         var shouldEnterFullScreenPresentationOnNextPlay: Bool = true
         
         func shouldEnterFullScreenPresentation(of player: AVPlayer) -> Bool {
