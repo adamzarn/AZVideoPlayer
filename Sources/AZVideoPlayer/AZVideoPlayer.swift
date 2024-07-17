@@ -24,6 +24,7 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
     let showsPlaybackControls: Bool
     let entersFullScreenWhenPlaybackBegins: Bool
     let pausesWhenFullScreenPlaybackEnds: Bool
+    let videoGravity: AVLayerVideoGravity
     
     public init(player: AVPlayer?,
                 willBeginFullScreenPresentationWithAnimationCoordinator: TransitionCompletion? = nil,
@@ -31,7 +32,8 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
                 statusDidChange: StatusDidChange? = nil,
                 showsPlaybackControls: Bool = true,
                 entersFullScreenWhenPlaybackBegins: Bool = false,
-                pausesWhenFullScreenPlaybackEnds: Bool = false) {
+                pausesWhenFullScreenPlaybackEnds: Bool = false,
+                videoGravity: AVLayerVideoGravity = .resizeAspect) {
         self.player = player
         self.willBeginFullScreenPresentationWithAnimationCoordinator = willBeginFullScreenPresentationWithAnimationCoordinator
         self.willEndFullScreenPresentationWithAnimationCoordinator = willEndFullScreenPresentationWithAnimationCoordinator
@@ -39,12 +41,14 @@ public struct AZVideoPlayer: UIViewControllerRepresentable {
         self.showsPlaybackControls = showsPlaybackControls
         self.entersFullScreenWhenPlaybackBegins = entersFullScreenWhenPlaybackBegins
         self.pausesWhenFullScreenPlaybackEnds = pausesWhenFullScreenPlaybackEnds
+        self.videoGravity = videoGravity
     }
     
     public func makeUIViewController(context: Context) -> AVPlayerViewController {
         controller.player = player
         controller.showsPlaybackControls = showsPlaybackControls
         controller.entersFullScreenWhenPlaybackBegins = entersFullScreenWhenPlaybackBegins
+        controller.videoGravity = videoGravity
         controller.delegate = context.coordinator
         return controller
     }
